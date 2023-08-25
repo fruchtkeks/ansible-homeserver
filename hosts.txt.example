@@ -1,0 +1,1 @@
+homeserver ansible_host=192.168.0.2 ansible_user=bugsbunny ansible_port=22 ansible_ssh_private_key_file=~/.ssh/id_rsa
