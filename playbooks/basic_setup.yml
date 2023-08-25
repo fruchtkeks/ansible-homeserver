@@ -1,0 +1,48 @@
+---
+- name: Homeserver Setup
+  hosts: homeserver
+  become: true
+
+  tasks:
+    - name: Update System
+      apt:
+        upgrade: dist
+        update_cache: yes
+        state: latest
+
+    - name: Install Docker Dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - python3-pip
+          - python3-setuptools
+          - virtualenv
+        state: latest
+
+    - name: Add Docker GPG Key
+      apt_key:
+        url: https://download.docker.com/linux/raspbian/gpg
+        keyring: /etc/apt/trusted.gpg.d/docker.gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: "deb [arch=armhf signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/raspbian bullseye stable"
+        update_cache: yes
+        state: present
+
+    - name: Install Docker
+      apt:
+        name:
+          - docker-ce
+        update_cache: true
+        state: latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name:
+          - docker
+        state: latest
